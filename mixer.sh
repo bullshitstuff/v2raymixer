@@ -17,4 +17,17 @@ do
     curl "${url}" >> "${output_file}"
 done
 
+# Mix withoutsub.txt file to output file
+cat withoutsub.txt >> "${output_file}"
+
+# Remove comments from the output file
+sed -i '/^#/d' "${output_file}"
+
+# Remove empty lines from the output file
+sed -i '/^$/d' "${output_file}"
+
+# Remove duplicate lines from the output file
+awk '!a[$0]++' "${output_file}" > "${output_file}.tmp" && mv "${output_file}.tmp" "${output_file}"
+
+# Print the output file name
 echo "All URLs fetched and mixed into ${output_file}"
